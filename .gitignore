@@ -1,0 +1,14 @@
+# Output di compilazione Garmin Connect IQ
+bin/
+*.prg
+*.iq
+*.prg.debug.xml
+
+# Chiavi di firma sviluppatore
+*.der
+*.pem
+developer_key*
+
+# File di sistema e IDE
+.DS_Store
+.vscode/settings.json
