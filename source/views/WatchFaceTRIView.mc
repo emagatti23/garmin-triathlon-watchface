@@ -11,13 +11,31 @@ import Toybox.WatchUi;
 class WatchFaceTRIView extends WatchUi.WatchFace {
 
     private var mIconFont as FontResource?;
+    private var mIsSleepMode as Boolean = false;
+    private var mRequiresBurnIn as Boolean = false;
 
-    //! Constructor. Loads the custom 1-bit icon font resource.
+    //! Constructor. Loads the custom 1-bit icon font resource and checks display properties.
     public function initialize() {
         WatchFace.initialize();
         if (Rez has :Fonts && Rez.Fonts has :GarminIcons) {
             mIconFont = WatchUi.loadResource(Rez.Fonts.GarminIcons) as FontResource;
         }
+        var devSettings = System.getDeviceSettings();
+        if (devSettings != null && (devSettings has :requiresBurnInProtection)) {
+            mRequiresBurnIn = (devSettings.requiresBurnInProtection == true);
+        }
+    }
+
+    //! Invoked when the watch enters low-power (Always-On) mode.
+    public function onEnterSleep() as Void {
+        mIsSleepMode = true;
+        WatchUi.requestUpdate();
+    }
+
+    //! Invoked when the watch wakes up to full-power mode.
+    public function onExitSleep() as Void {
+        mIsSleepMode = false;
+        WatchUi.requestUpdate();
     }
 
     //! Main rendering callback invoked by the Connect IQ display pipeline.
@@ -30,6 +48,14 @@ class WatchFaceTRIView extends WatchUi.WatchFace {
         var h = dc.getHeight();
         var cx = w / 2;
         var cy = h / 2;
+
+        // =====================================================================
+        // 0. AMOLED ALWAYS-ON DISPLAY (BURN-IN PROTECTION MODE)
+        // =====================================================================
+        if (mIsSleepMode && mRequiresBurnIn) {
+            drawBurnInSafeClock(dc, cx, cy, h);
+            return;
+        }
 
         // =====================================================================
         // 1. TOP PROGRESS BAR & METRIC (Configurable via TopBarMetric setting)
@@ -271,5 +297,25 @@ class WatchFaceTRIView extends WatchUi.WatchFace {
             dc.setColor((percent > 20) ? Graphics.COLOR_DK_GREEN : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
             dc.fillRectangle(x + 2, topY + 2, fillW, h - 4);
         }
+    }
+
+    //! Renders a minimalist, pixel-shifting clock for AMOLED low-power Always-On mode.
+    //! Shifts coordinates on a 4-minute cycle to prevent static pixel burn-in.
+    private function drawBurnInSafeClock(dc as Dc, cx as Number, cy as Number, h as Number) as Void {
+        var clock = System.getClockTime();
+        var timeStr = SettingsManager.formatTime(clock.hour, clock.min);
+
+        // Pixel shifting (-4px / +4px) basato sul minuto corrente
+        var shiftX = ((clock.min % 2) == 0) ? -4 : 4;
+        var shiftY = (((clock.min / 2) % 2) == 0) ? -4 : 4;
+
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(
+            cx + shiftX,
+            cy + shiftY,
+            Graphics.FONT_NUMBER_MILD,
+            timeStr,
+            Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER
+        );
     }
 }
