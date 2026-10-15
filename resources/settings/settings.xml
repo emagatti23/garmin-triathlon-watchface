@@ -1,25 +1,92 @@
 <settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
 
-    <setting propertyKey="@Properties.BackgroundColor" title="@Strings.BackgroundColorTitle">
+    <setting propertyKey="@Properties.TimeFormat" title="@Strings.TimeFormatTitle">
         <settingConfig type="list">
-            <listEntry value="0x000000">@Strings.ColorBlack</listEntry>
-            <listEntry value="0x555555">@Strings.ColorDarkGray</listEntry>
-            <listEntry value="0xAAAAAA">@Strings.ColorLightGray</listEntry>
-            <listEntry value="0xFFFFFF">@Strings.ColorWhite</listEntry>
+            <listEntry value="0">@Strings.TimeFormatAuto</listEntry>
+            <listEntry value="1">@Strings.TimeFormat24h</listEntry>
+            <listEntry value="2">@Strings.TimeFormat12h</listEntry>
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.ForegroundColor" title="@Strings.ForegroundColorTitle">
+    <setting propertyKey="@Properties.TopBarMetric" title="@Strings.TopBarMetricTitle">
         <settingConfig type="list">
-            <listEntry value="0x000000">@Strings.ColorBlack</listEntry>
-            <listEntry value="0x0000FF">@Strings.ColorBlue</listEntry>
-            <listEntry value="0xFF0000">@Strings.ColorRed</listEntry>
-            <listEntry value="0xFFFFFF">@Strings.ColorWhite</listEntry>
+            <listEntry value="0">@Strings.MetricSteps</listEntry>
+            <listEntry value="3">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="5">@Strings.MetricBattery</listEntry>
+            <listEntry value="4">@Strings.MetricCalories</listEntry>
+            <listEntry value="1">@Strings.MetricFloors</listEntry>
+            <listEntry value="6">@Strings.MetricDailyDist</listEntry>
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.UseMilitaryFormat" title="@Strings.MilitaryFormatTitle">
-        <settingConfig type="boolean" />
+    <setting propertyKey="@Properties.SlotLeftMetric" title="@Strings.SlotLeftTitle">
+        <settingConfig type="list">
+            <listEntry value="1">@Strings.MetricFloors</listEntry>
+            <listEntry value="0">@Strings.MetricSteps</listEntry>
+            <listEntry value="2">@Strings.MetricHeartRate</listEntry>
+            <listEntry value="3">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="4">@Strings.MetricCalories</listEntry>
+            <listEntry value="5">@Strings.MetricBattery</listEntry>
+            <listEntry value="6">@Strings.MetricDailyDist</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.SlotCenterMetric" title="@Strings.SlotCenterTitle">
+        <settingConfig type="list">
+            <listEntry value="2">@Strings.MetricHeartRate</listEntry>
+            <listEntry value="0">@Strings.MetricSteps</listEntry>
+            <listEntry value="1">@Strings.MetricFloors</listEntry>
+            <listEntry value="3">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="4">@Strings.MetricCalories</listEntry>
+            <listEntry value="5">@Strings.MetricBattery</listEntry>
+            <listEntry value="6">@Strings.MetricDailyDist</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.SlotRightMetric" title="@Strings.SlotRightTitle">
+        <settingConfig type="list">
+            <listEntry value="3">@Strings.MetricBodyBattery</listEntry>
+            <listEntry value="0">@Strings.MetricSteps</listEntry>
+            <listEntry value="1">@Strings.MetricFloors</listEntry>
+            <listEntry value="2">@Strings.MetricHeartRate</listEntry>
+            <listEntry value="4">@Strings.MetricCalories</listEntry>
+            <listEntry value="5">@Strings.MetricBattery</listEntry>
+            <listEntry value="6">@Strings.MetricDailyDist</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.RingLeftSport" title="@Strings.RingLeftSportTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.SportSwim</listEntry>
+            <listEntry value="1">@Strings.SportBike</listEntry>
+            <listEntry value="2">@Strings.SportRun</listEntry>
+            <listEntry value="3">@Strings.SportSteps</listEntry>
+            <listEntry value="4">@Strings.SportCalories</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.RingCenterSport" title="@Strings.RingCenterSportTitle">
+        <settingConfig type="list">
+            <listEntry value="1">@Strings.SportBike</listEntry>
+            <listEntry value="0">@Strings.SportSwim</listEntry>
+            <listEntry value="2">@Strings.SportRun</listEntry>
+            <listEntry value="3">@Strings.SportSteps</listEntry>
+            <listEntry value="4">@Strings.SportCalories</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.RingRightSport" title="@Strings.RingRightSportTitle">
+        <settingConfig type="list">
+            <listEntry value="2">@Strings.SportRun</listEntry>
+            <listEntry value="0">@Strings.SportSwim</listEntry>
+            <listEntry value="1">@Strings.SportBike</listEntry>
+            <listEntry value="3">@Strings.SportSteps</listEntry>
+            <listEntry value="4">@Strings.SportCalories</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.SyncUrl" title="@Strings.SyncUrlTitle">
+        <settingConfig type="alphaNumeric" />
     </setting>
 
 </settings>

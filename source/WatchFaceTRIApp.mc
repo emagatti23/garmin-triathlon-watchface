@@ -5,40 +5,45 @@ import Toybox.Time;
 import Toybox.WatchUi;
 import Toybox.Lang;
 
-
+//! Main Application Entry Point.
+//! Coordinates lifecycle events, background service registration, and runtime settings updates.
 (:background)
 class WatchFaceTRIApp extends Application.AppBase {
 
-    function initialize() {
+    //! Constructor. Initializes the base Connect IQ application.
+    public function initialize() {
         AppBase.initialize();
     }
 
-    function onStart(state as Dictionary?) as Void {
-        // --- VALORI FITTIZI DI TEST PER I 3 CERCHI ---
-        if (Application.Storage.getValue("weekly_swim_km") == null) {
-            Application.Storage.setValue("weekly_swim_km", 3.8); // Es. 3.8 km di nuoto
-        }
-        if (Application.Storage.getValue("weekly_bike_km") == null) {
-            Application.Storage.setValue("weekly_bike_km", 120.0); // Es. 120 km di bici
-        }
-        if (Application.Storage.getValue("weekly_run_km") == null) {
-            Application.Storage.setValue("weekly_run_km", 24.5); // Es. 24.5 km di corsa
-        }
-
-        // Registra il temporal event per il background
+    //! Invoked when the application starts.
+    //! Registers the hourly background temporal event if not already active.
+    //! @param state Optional dictionary containing application startup state.
+    public function onStart(state as Dictionary?) as Void {
         if (Background.getTemporalEventRegisteredTime() == null) {
             Background.registerForTemporalEvent(new Time.Duration(3600));
         }
     }
 
-    function onStop(state as Dictionary?) as Void {}
+    //! Invoked when the application stops.
+    //! @param state Optional dictionary containing application termination state.
+    public function onStop(state as Dictionary?) as Void {
+    }
 
-    function getInitialView() as [Views] or [Views, InputDelegates] {
+    //! Returns the main watch face view instance.
+    //! @return Array containing the primary WatchFaceTRIView.
+    public function getInitialView() as [Views] or [Views, InputDelegates] {
         return [ new WatchFaceTRIView() ];
     }
 
-    // Riceve i dati dal background service
-    function onBackgroundData(data) as Void {
+    //! Triggered automatically when the user modifies settings in Garmin Connect IQ mobile/express.
+    //! Forces an immediate UI redraw to reflect the new configuration.
+    public function onSettingsChanged() as Void {
+        WatchUi.requestUpdate();
+    }
+
+    //! Callback invoked when the background service returns synchronized training data.
+    //! @param data Dictionary containing optional "swim", "bike", and "run" weekly kilometer totals.
+    public function onBackgroundData(data) as Void {
         if (data instanceof Dictionary) {
             if (data.hasKey("swim")) { Application.Storage.setValue("weekly_swim_km", data["swim"]); }
             if (data.hasKey("bike")) { Application.Storage.setValue("weekly_bike_km", data["bike"]); }
@@ -47,7 +52,9 @@ class WatchFaceTRIApp extends Application.AppBase {
         }
     }
 
-    function getServiceDelegate() as [System.ServiceDelegate] {
+    //! Returns the background service delegate responsible for periodic web synchronization.
+    //! @return Array containing the WatchFaceTRIBgService instance.
+    public function getServiceDelegate() as [System.ServiceDelegate] {
         return [ new WatchFaceTRIBgService() ];
     }
 }

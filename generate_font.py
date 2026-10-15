@@ -1,8 +1,9 @@
+from pathlib import Path
 from PIL import Image
 
-# Matrici 16x16 pixel-art fedeli alle tue icone Garmin (1 = Bianco puro, 0 = Trasparente)
+# 16x16 1-bit pixel-art matrices (1 = Pure White, 0 = Transparent)
 ICONS = {
-    # 'A': STEPS (Doppie impronte sfalsate con tacco separato)
+    # 'A': STEPS
     "A": [
         "0001110000000000",
         "0011111000000000",
@@ -21,7 +22,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'B': FLOORS (Scalini a zig-zag + freccia in alto a sinistra)
+    # 'B': FLOORS
     "B": [
         "0001111100000000",
         "0000011100000000",
@@ -40,7 +41,7 @@ ICONS = {
         "0011000000000000",
         "0000000000000000",
     ],
-    # 'C': HEART RATE (Cuore pieno simmetrico)
+    # 'C': HEART RATE
     "C": [
         "0000000000000000",
         "0011110000111100",
@@ -59,7 +60,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'D': BODY BATTERY (Arco a segmenti + omino a braccia alzate)
+    # 'D': BODY BATTERY
     "D": [
         "0000001111100000",
         "0001101111111000",
@@ -78,7 +79,7 @@ ICONS = {
         "0000001111000000",
         "0000000000000000",
     ],
-    # 'E': SWIM (Nuotatore stile libero + onde)
+    # 'E': SWIM
     "E": [
         "0000000110000000",
         "0000001111000000",
@@ -97,7 +98,7 @@ ICONS = {
         "0011000011000010",
         "1100111100111101",
     ],
-    # 'F': BIKE (Ciclista piegato + 2 ruote cave)
+    # 'F': BIKE
     "F": [
         "0000000001100000",
         "0000000011110000",
@@ -116,7 +117,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'G': RUN (Runner inclinato in avanti)
+    # 'G': RUN
     "G": [
         "0000000000111000",
         "0000000001111100",
@@ -135,7 +136,7 @@ ICONS = {
         "0000000110000000",
         "0000000000000000",
     ],
-    # 'H': CLEAR / SUNNY (Sole)
+    # 'H': CLEAR / SUNNY
     "H": [
         "0000000110000000",
         "0010000110000100",
@@ -154,7 +155,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'I': PARTLY CLOUDY (Sole + Nuvola)
+    # 'I': PARTLY CLOUDY
     "I": [
         "0000000000100000",
         "0000000100100100",
@@ -173,7 +174,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'J': CLOUDY (Nuvola)
+    # 'J': CLOUDY
     "J": [
         "0000000000000000",
         "0000000000000000",
@@ -192,7 +193,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'K': RAIN (Pioggia)
+    # 'K': RAIN
     "K": [
         "0000000000000000",
         "0000011111000000",
@@ -211,7 +212,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'L': THUNDERSTORM (Temporale)
+    # 'L': THUNDERSTORM
     "L": [
         "0000000000000000",
         "0000011111000000",
@@ -230,7 +231,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'M': SNOW (Neve)
+    # 'M': SNOW
     "M": [
         "0000000000000000",
         "0000011111000000",
@@ -249,7 +250,7 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
-    # 'N': FOG / WIND (Nebbia / Vento)
+    # 'N': FOG / WIND
     "N": [
         "0000000000000000",
         "0000000000000000",
@@ -268,39 +269,85 @@ ICONS = {
         "0000000000000000",
         "0000000000000000",
     ],
+    # 'O': CALORIES (Flame icon)
+    "O": [
+        "0000000010000000",
+        "0000000110000000",
+        "0000001111000000",
+        "0000011111000000",
+        "0000111111100000",
+        "0001111101110000",
+        "0011111001111000",
+        "0011110000111000",
+        "0111100110011100",
+        "0111101111011100",
+        "0111111111111100",
+        "0011111111111000",
+        "0011111111111000",
+        "0001111111110000",
+        "0000011111000000",
+        "0000000000000000",
+    ],
+    # 'P': BATTERY / POWER (Lightning bolt icon)
+    "P": [
+        "0000000011110000",
+        "0000000111100000",
+        "0000001111000000",
+        "0000011110000000",
+        "0000111100000000",
+        "0001111111111000",
+        "0001111111110000",
+        "0000000111100000",
+        "0000001111000000",
+        "0000011110000000",
+        "0000111100000000",
+        "0001110000000000",
+        "0011100000000000",
+        "0110000000000000",
+        "0000000000000000",
+        "0000000000000000",
+    ],
 }
 
-keys = sorted(ICONS.keys())
-num_icons = len(keys)
-img = Image.new("RGBA", (16 * num_icons, 16), (0, 0, 0, 0))
-pixels = img.load()
+def build_font(output_dir: Path):
+    output_dir.mkdir(parents=True, exist_ok=True)
+    keys = sorted(ICONS.keys())
+    num_icons = len(keys)
 
-for idx, k in enumerate(keys):
-    grid = ICONS[k]
-    ox = idx * 16
-    for y in range(16):
-        row = grid[y]
-        for x in range(16):
-            if row[x] == "1":
-                pixels[ox + x, y] = (255, 255, 255, 255)
+    img = Image.new("RGBA", (16 * num_icons, 16), (0, 0, 0, 0))
+    pixels = img.load()
 
-img.save("garmin_icons.png")
+    for idx, k in enumerate(keys):
+        grid = ICONS[k]
+        ox = idx * 16
+        for y in range(16):
+            row = grid[y]
+            for x in range(16):
+                if row[x] == "1":
+                    pixels[ox + x, y] = (255, 255, 255, 255)
 
-fnt_lines = [
-    'info face="GarminIcons" size=16 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=0 aa=0 padding=0,0,0,0 spacing=1,1',
-    f"common lineHeight=16 base=16 scaleW={16 * num_icons} scaleH=16 pages=1 packed=0",
-    'page id=0 file="garmin_icons.png"',
-    f"chars count={num_icons}",
-]
+    png_path = output_dir / "garmin_icons.png"
+    fnt_path = output_dir / "garmin_icons.fnt"
+    img.save(png_path)
 
-for idx, k in enumerate(keys):
-    char_id = ord(k)
-    x_pos = idx * 16
-    fnt_lines.append(
-        f"char id={char_id:<4} x={x_pos:<4} y=0    width=16   height=16   xoffset=0    yoffset=0    xadvance=16   page=0  chnl=0"
-    )
+    fnt_lines = [
+        'info face="GarminIcons" size=16 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=0 aa=0 padding=0,0,0,0 spacing=1,1',
+        f"common lineHeight=16 base=16 scaleW={16 * num_icons} scaleH=16 pages=1 packed=0",
+        'page id=0 file="garmin_icons.png"',
+        f"chars count={num_icons}",
+    ]
 
-with open("garmin_icons.fnt", "w") as f:
-    f.write("\n".join(fnt_lines) + "\n")
+    for idx, k in enumerate(keys):
+        char_id = ord(k)
+        x_pos = idx * 16
+        fnt_lines.append(
+            f"char id={char_id:<4} x={x_pos:<4} y=0    width=16   height=16   xoffset=0    yoffset=0    xadvance=16   page=0  chnl=0"
+        )
 
-print("Generati garmin_icons.png e garmin_icons.fnt in 1-bit puro!")
+    with open(fnt_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(fnt_lines) + "\n")
+
+    print(f"[OK] Generated {png_path} and {fnt_path} ({num_icons} 1-bit icons: A..{keys[-1]})")
+
+if __name__ == "__main__":
+    build_font(Path("resources/fonts"))

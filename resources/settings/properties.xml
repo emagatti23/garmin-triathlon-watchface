@@ -1,7 +1,18 @@
 <properties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <!-- 0: Auto, 1: 24-Hour, 2: 12-Hour -->
+    <property id="TimeFormat" type="number">0</property>
 
-    <property id="BackgroundColor" type="number">0x000000</property>
-    <property id="ForegroundColor" type="number">0xFF0000</property>
-    <property id="UseMilitaryFormat" type="boolean">false</property>
+    <!-- Metric IDs: 0=Steps, 1=Floors, 2=HeartRate, 3=BodyBattery, 4=Calories, 5=DeviceBattery, 6=DailyDistanceKm -->
+    <property id="TopBarMetric" type="number">0</property>
+    <property id="SlotLeftMetric" type="number">1</property>
+    <property id="SlotCenterMetric" type="number">2</property>
+    <property id="SlotRightMetric" type="number">3</property>
 
+    <!-- Sport Ring IDs: 0=Swim, 1=Bike, 2=Run, 3=Steps, 4=Calories -->
+    <property id="RingLeftSport" type="number">0</property>
+    <property id="RingCenterSport" type="number">1</property>
+    <property id="RingRightSport" type="number">2</property>
+
+    <!-- Optional JSON Endpoint for external weekly totals sync -->
+    <property id="SyncUrl" type="string"></property>
 </properties>
