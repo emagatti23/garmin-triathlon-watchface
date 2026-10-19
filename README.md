@@ -82,7 +82,7 @@ Developing for embedded wearable devices like Garmin sportwatches involves stric
 ### Building from Source (Developers)
 1. Clone this repository locally:
    ```sh
-   git clone https://github.com/your-username/WatchFaceTRI.git
+   git clone https://github.com/emagatti23/WatchFaceTRI.git
    cd WatchFaceTRI
    ```
 2. Generate a developer signing key (if you don't already have one):
