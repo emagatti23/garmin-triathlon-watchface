@@ -1,4 +1,4 @@
-# Garmin Triathlon Training WatchFace
+# <img src="resources/drawables/launcher_icon.png" width="36" valign="middle"> Garmin Triathlon Training WatchFace
 
 A custom watchface developed in Monkey C for Garmin Connect IQ devices, designed to track training volumes in real time across the three triathlon disciplines (swimming, cycling, and running) during athletic preparation blocks.
 
@@ -24,7 +24,9 @@ A custom watchface developed in Monkey C for Garmin Connect IQ devices, designed
 
 ## Project Overview
 
-![WatchFace Screenshot](resources\drawables\app_example.png) 
+<p align="center">
+  <img src="resources/drawables/app_example.png" alt="WatchFace Screenshot" width="300">
+</p>
 
 ### The Problem and Motivation
 
